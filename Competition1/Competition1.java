@@ -4,38 +4,41 @@ public class Competition1 {
     public static String ciphertext = "ETEVHTWGSAHGWYVPNKQOEGWYVPNKPDEPHWAOVWPFWNHANEVWXAVOAEAJEUXTAOWBTEVHTWGSAHGWYVPNQAOQVGTYHAVAXETOANFQEOIQPLANTEVHFYNSQVEBEOWSKNCKLOPEVTYJAUFWYNCOTWZESQEPERQSQOPEVYCEVHEGDEHEVHEYOPNQEEHWYFTKTEVHTWGSAHGWYVPNKQOWVAPDEPWVTKFWNHANOTEVHTWGSAHGWYVPNQAOPDANAENAWVTKPIWHWYFTKTEVHTWGSAHGWYVPNQAOQVPDAIWNTHWVAWBPDAUQOYLFASQOPEVIDEPQOPDAWPDANWVA";
     public static String phrase = "NEPALSERBIASWITZERLANDBURKINAFASOKYRGYZSTANLUXEMBOURGSLOVAKIATAJIKISTANUGANDACHADANDAUSTRIA";
 
-    public static void prCharWithFreq(String s) {
-
-        // Store all characters and
-        // their frequencies in dictionary
-        Map<Character, Integer> d = new HashMap<Character, Integer>();
-
-        for (int i = 0; i < s.length(); i++) {
-            if (d.containsKey(s.charAt(i))) {
-                d.put(s.charAt(i), d.get(s.charAt(i)) + 1);
-            } else {
-                d.put(s.charAt(i), 1);
-            }
-        }
-
-        // Print characters and their
-        // frequencies in same order
-        // of their appearance
-        for (int i = 0; i < s.length(); i++) {
-
-            // Print only if this
-            // character is not printed
-            // before
-            if (d.get(s.charAt(i)) != 0) {
-                System.out.print(s.charAt(i));
-                System.out.print(d.get(s.charAt(i)) + " ");
-                d.put(s.charAt(i), 0);
-            }
-        }
-    }
-
     public static void main(String[] args) {
         System.out.println("Ciphertext: " + ciphertext);
         System.out.println("Hint phrase: " + phrase);
+        System.out.println("Hint phrase length: " + phrase.length());
+        Vector<Integer> eLocations = new Vector<Integer>();
+        for (int j = 0; j < phrase.length(); j++) {
+            char currentChar = phrase.charAt(j);
+            if (currentChar == "E".charAt(0)) {
+                eLocations.add(j);
+            }
+        }
+        System.out.println("eLocations in phrase: " + eLocations);
+        for (int i = 0; i <= ciphertext.length() - phrase.length(); i++) {
+            String cipherPortion = ciphertext.substring(i, i + phrase.length());
+            if (cipherPortion.charAt(1) == cipherPortion.charAt(6)
+                    && cipherPortion.charAt(1) == cipherPortion.charAt(16)
+                    && cipherPortion.charAt(1) == cipherPortion.charAt(46)) {
+                System.out.println(i);
+                System.out.println(phrase);
+                System.out.println(cipherPortion);
+                Map<Character, Character> decoder = new HashMap<Character, Character>();
+                for (int k = 0; k < cipherPortion.length(); k++) {
+                    if (!decoder.containsKey(cipherPortion.charAt(k))) {
+                        decoder.put(cipherPortion.charAt(k), phrase.charAt(k));
+                    }
+                }
+                System.out.println("Here is the hashmap to crack it:");
+                System.out.println(decoder);
+                StringBuilder decoded = new StringBuilder(ciphertext.length());
+                for (int k = 0; k < ciphertext.length(); k++) {
+                    decoded.append(decoder.get(ciphertext.charAt(k)));
+                }
+                System.out.println(decoded.toString());
+                break;
+            }
+        }
     }
 }
